@@ -8,51 +8,48 @@
     body {
       font-family: sans-serif;
       margin: 0;
-      padding: 0;
-      height: 100vh;
+      padding: 20px 10px;
       background-color: #fff3e0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+      overflow-x: hidden;
       position: relative;
     }
     .container {
       text-align: center;
       z-index: 10;
-      max-width: 90%;
+      max-width: 700px;
+      margin: 0 auto;
     }
     h1 {
       margin-bottom: 10px;
-      font-size: 1.8em;
+      font-size: 2em;
     }
     #instruction {
       margin-bottom: 20px;
-      font-size: 1em;
+      font-size: 1.2em;
     }
     #words {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
-      min-height: 50px;
-      padding: 10px;
+      min-height: 60px;
+      padding: 12px;
       background-color: #fff;
       border: 2px dashed #aaa;
       margin-bottom: 20px;
     }
     .word {
       background-color: #e0f7fa;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border-radius: 8px;
       cursor: grab;
       user-select: none;
-      font-size: 1em;
+      font-size: 1.2em;
     }
     #result {
       margin-top: 20px;
       font-weight: bold;
-      font-size: 1.2em;
+      font-size: 1.3em;
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
     .animate-result {
@@ -92,10 +89,10 @@
       100% { top: 10%; left: 110%; transform: rotate(0deg); }
     }
     @media (max-width: 600px) {
-      h1 { font-size: 1.5em; }
-      #instruction { font-size: 1em; }
-      .word { padding: 6px 10px; font-size: 1em; }
-      button { padding: 8px 16px; font-size: 1em; }
+      h1 { font-size: 1.7em; }
+      #instruction { font-size: 1.2em; }
+      .word { padding: 8px 12px; font-size: 1.2em; }
+      button { padding: 10px 18px; font-size: 1em; }
     }
   </style>
 </head>
