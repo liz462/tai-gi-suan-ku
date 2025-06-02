@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>台語選句</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      height: 100vh;
+      background-color: #fff3e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .container {
+      text-align: center;
+      z-index: 10;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #instruction {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    #words {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      min-height: 50px;
+      padding: 10px;
+      background-color: #fff;
+      border: 2px dashed #aaa;
+      margin-bottom: 20px;
+    }
+    .word {
+      background-color: #e0f7fa;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: grab;
+      user-select: none;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.2em;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    .animate-result {
+      animation: pop-in 0.8s ease;
+    }
+    @keyframes pop-in {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .bee {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-image: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2dqeGl3eW4yMm1jNzN2Y2N4YWM5MDVuOTRlY290ZDhteGxxemZsNCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/1OrzLUhqBIfiEOTKen/giphy.webp');
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: fly 15s linear infinite;
+      opacity: 0.8;
+      z-index: 1;
+    }
+    .bee:nth-child(1) { animation-delay: 0s; }
+    .bee:nth-child(2) { animation-delay: 5s; }
+    .bee:nth-child(3) { animation-delay: 10s; }
+
+    @keyframes fly {
+      0%   { top: 5%; left: -70px; transform: rotate(0deg); }
+      25%  { top: 20%; left: 30%; transform: rotate(15deg); }
+      50%  { top: 60%; left: 60%; transform: rotate(-10deg); }
+      75%  { top: 30%; left: 80%; transform: rotate(20deg); }
+      100% { top: 10%; left: 110%; transform: rotate(0deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bee"></div>
+  <div class="bee"></div>
+  <div class="bee"></div>
+  <div class="container">
+    <h1>台語選句</h1>
+    <div id="instruction">請共遮的語詞重新排列，完成正確的話句：</div>
+    <div id="words"></div>
+    <button id="submitButton" onclick="checkAnswer()">送出</button>
+    <button id="nextButton" onclick="loadNext()" disabled>後一條</button>
+    <button id="resetButton" onclick="resetGame()" style="display:none">閣耍一改</button>
+    <div id="result"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script>
+    const allSentences = [
+      ["我", "愛", "食", "柑仔"],
+      ["小妹", "當咧", "啉水"],
+      ["伊的", "尾溜", "足", "媠", "neh"],
+      ["我",  "腹肚", "足", "枵"],
+      ["阿母", "共", "暗頓", "攢", "好矣"]
+    ];
+
+    let remainingSentences = [...allSentences];
+    let currentAnswer = [];
+    const wordsContainer = document.getElementById("words");
+    const resultDiv = document.getElementById("result");
+    const nextButton = document.getElementById("nextButton");
+    const resetButton = document.getElementById("resetButton");
+    const submitButton = document.getElementById("submitButton");
+
+    const sortable = new Sortable(wordsContainer, {
+      animation: 150
+    });
+
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function loadNext() {
+      resultDiv.textContent = "";
+      resultDiv.classList.remove("animate-result");
+      wordsContainer.innerHTML = "";
+      nextButton.disabled = true;
+      submitButton.disabled = false;
+
+      if (remainingSentences.length === 0) {
+        resultDiv.textContent = "🎉 攏做了矣！";
+        resultDiv.style.color = "blue";
+        resultDiv.classList.add("animate-result");
+        resetButton.style.display = "inline-block";
+        submitButton.disabled = true;
+        nextButton.disabled = true;
+        return;
+      }
+
+      const index = Math.floor(Math.random() * remainingSentences.length);
+      const sentence = remainingSentences.splice(index, 1)[0];
+      currentAnswer = sentence;
+      const shuffled = shuffle(sentence);
+      for (let word of shuffled) {
+        const el = document.createElement("div");
+        el.className = "word";
+        el.textContent = word;
+        wordsContainer.appendChild(el);
+      }
+    }
+
+    function checkAnswer() {
+      const current = Array.from(wordsContainer.children).map(el => el.textContent);
+      if (JSON.stringify(current) === JSON.stringify(currentAnswer)) {
+        resultDiv.textContent = "✅ 著！正確！";
+        resultDiv.style.color = "green";
+        resultDiv.classList.remove("animate-result");
+        void resultDiv.offsetWidth;
+        resultDiv.classList.add("animate-result");
+        nextButton.disabled = false;
+
+        if (remainingSentences.length === 0) {
+          resultDiv.textContent = "🎉 攏做了矣！";
+          resultDiv.style.color = "blue";
+          resultDiv.classList.add("animate-result");
+          resetButton.style.display = "inline-block";
+          submitButton.disabled = true;
+          nextButton.disabled = true;
+        }
+      } else {
+        resultDiv.textContent = "❌ 毋著喔！閣試看覓！";
+        resultDiv.style.color = "red";
+        resultDiv.classList.remove("animate-result");
+        void resultDiv.offsetWidth;
+        resultDiv.classList.add("animate-result");
+      }
+    }
+
+    function resetGame() {
+      remainingSentences = [...allSentences];
+      resetButton.style.display = "none";
+      resultDiv.textContent = "";
+      resultDiv.classList.remove("animate-result");
+      loadNext();
+    }
+
+    loadNext();
+  </script>
+</body>
+</html>
