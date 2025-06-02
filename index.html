@@ -2,11 +2,13 @@
 <html lang="zh-Hant-TW">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>台語選句</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
+      padding: 0;
       height: 100vh;
       background-color: #fff3e0;
       display: flex;
@@ -18,13 +20,15 @@
     .container {
       text-align: center;
       z-index: 10;
+      max-width: 90%;
     }
     h1 {
       margin-bottom: 10px;
+      font-size: 1.8em;
     }
     #instruction {
       margin-bottom: 20px;
-      font-size: 18px;
+      font-size: 1em;
     }
     #words {
       display: flex;
@@ -39,10 +43,11 @@
     }
     .word {
       background-color: #e0f7fa;
-      padding: 10px 15px;
+      padding: 8px 12px;
       border-radius: 8px;
       cursor: grab;
       user-select: none;
+      font-size: 1em;
     }
     #result {
       margin-top: 20px;
@@ -60,14 +65,14 @@
     }
     button {
       padding: 10px 20px;
-      font-size: 16px;
+      font-size: 1em;
       margin: 5px;
       cursor: pointer;
     }
     .bee {
       position: absolute;
-      width: 60px;
-      height: 60px;
+      width: 40px;
+      height: 40px;
       background-image: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2dqeGl3eW4yMm1jNzN2Y2N4YWM5MDVuOTRlY290ZDhteGxxemZsNCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/1OrzLUhqBIfiEOTKen/giphy.webp');
       background-size: contain;
       background-repeat: no-repeat;
@@ -85,6 +90,12 @@
       50%  { top: 60%; left: 60%; transform: rotate(-10deg); }
       75%  { top: 30%; left: 80%; transform: rotate(20deg); }
       100% { top: 10%; left: 110%; transform: rotate(0deg); }
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.5em; }
+      #instruction { font-size: 1em; }
+      .word { padding: 6px 10px; font-size: 1em; }
+      button { padding: 8px 16px; font-size: 1em; }
     }
   </style>
 </head>
