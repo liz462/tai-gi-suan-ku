@@ -106,7 +106,7 @@
     <div id="words"></div>
     <button id="submitButton" onclick="checkAnswer()">送出</button>
     <button id="nextButton" onclick="loadNext()" disabled>後一條</button>
-    <button id="resetButton" onclick="resetGame()" style="display:none">閣耍一改</button>
+    <button id="resetButton" onclick="resetGame()" style="display:none">繼續耍</button>
     <div id="result"></div>
   </div>
 
@@ -115,6 +115,8 @@
     let allSentences = [];
     let remainingSentences = [];
     let currentAnswer = [];
+    let questionCount = 0;
+    const maxQuestions = 5;
 
     const wordsContainer = document.getElementById("words");
     const resultDiv = document.getElementById("result");
@@ -142,8 +144,8 @@
       nextButton.disabled = true;
       submitButton.disabled = false;
 
-      if (remainingSentences.length === 0) {
-        resultDiv.textContent = "🎉 攏做了矣！";
+      if (questionCount >= maxQuestions) {
+        resultDiv.textContent = "🎉 做5條矣！";
         resultDiv.style.color = "blue";
         resultDiv.classList.add("animate-result");
         resetButton.style.display = "inline-block";
@@ -173,9 +175,10 @@
         void resultDiv.offsetWidth;
         resultDiv.classList.add("animate-result");
         nextButton.disabled = false;
+        questionCount++;
 
-        if (remainingSentences.length === 0) {
-          resultDiv.textContent = "🎉 攏做了矣！";
+        if (questionCount >= maxQuestions) {
+          resultDiv.textContent = "🎉 做5條矣！";
           resultDiv.style.color = "blue";
           resultDiv.classList.add("animate-result");
           resetButton.style.display = "inline-block";
@@ -196,6 +199,7 @@
       resetButton.style.display = "none";
       resultDiv.textContent = "";
       resultDiv.classList.remove("animate-result");
+      questionCount = 0;
       loadNext();
     }
 
