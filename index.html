@@ -102,7 +102,7 @@
   <div class="bee"></div>
   <div class="container">
     <h1>台語選句</h1>
-    <div id="instruction">請共遮的語詞重新排列，完成正確的話句：</div>
+    <div id="instruction">共遮的語詞重新排列，完成正確的話句：</div>
     <div id="words"></div>
     <button id="submitButton" onclick="checkAnswer()">送出</button>
     <button id="nextButton" onclick="loadNext()" disabled>後一條</button>
@@ -115,6 +115,7 @@
     let allSentences = [];
     let remainingSentences = [];
     let currentAnswer = [];
+    let usedSentences = [];
     let questionCount = 0;
     const maxQuestions = 5;
 
@@ -138,24 +139,16 @@
     }
 
     function loadNext() {
+      if (questionCount >= maxQuestions) return;
       resultDiv.textContent = "";
       resultDiv.classList.remove("animate-result");
       wordsContainer.innerHTML = "";
       nextButton.disabled = true;
       submitButton.disabled = false;
 
-      if (questionCount >= maxQuestions) {
-        resultDiv.textContent = "🎉 做5條矣！";
-        resultDiv.style.color = "blue";
-        resultDiv.classList.add("animate-result");
-        resetButton.style.display = "inline-block";
-        submitButton.disabled = true;
-        nextButton.disabled = true;
-        return;
-      }
-
       const index = Math.floor(Math.random() * remainingSentences.length);
       const sentence = remainingSentences.splice(index, 1)[0];
+      usedSentences.push(sentence);
       currentAnswer = sentence;
       const shuffled = shuffle(sentence);
       for (let word of shuffled) {
@@ -196,6 +189,7 @@
 
     function resetGame() {
       remainingSentences = [...allSentences];
+      usedSentences = [];
       resetButton.style.display = "none";
       resultDiv.textContent = "";
       resultDiv.classList.remove("animate-result");
